@@ -9,6 +9,7 @@ import {
   YAxis,
 } from "recharts";
 import { BookOpen, Calendar, CheckSquare, Clock } from "lucide-react";
+import { useCoresGrafico } from "../hooks/useTema";
 import { extrairMensagemErro } from "../services/api";
 import { obterResumoDashboard } from "../services/dashboardService";
 import { obterAluno } from "../services/authService";
@@ -16,6 +17,7 @@ import { tempoRelativo } from "../utils/tempoRelativo";
 
 export default function DashboardHome() {
   const aluno = obterAluno();
+  const chart = useCoresGrafico();
   const [dados, setDados] = useState(null);
   const [erro, setErro] = useState("");
   const [carregando, setCarregando] = useState(true);
@@ -109,22 +111,22 @@ export default function DashboardHome() {
           <div style={{ width: "100%", height: 280 }}>
             <ResponsiveContainer>
               <BarChart data={grafico} margin={{ top: 8, right: 8, left: -18, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#2a2a35" vertical={false} />
-                <XAxis dataKey="dia" tick={{ fill: "#9ca3af", fontSize: 12 }} axisLine={false} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke={chart.grid} vertical={false} />
+                <XAxis dataKey="dia" tick={{ fill: chart.tick, fontSize: 12 }} axisLine={false} tickLine={false} />
                 <YAxis
-                  tick={{ fill: "#9ca3af", fontSize: 12 }}
+                  tick={{ fill: chart.tick, fontSize: 12 }}
                   axisLine={false}
                   tickLine={false}
                   allowDecimals
                   domain={[0, "auto"]}
-                  label={{ value: "h", position: "insideLeft", fill: "#6b7280", fontSize: 11 }}
+                  label={{ value: "h", position: "insideLeft", fill: chart.tick, fontSize: 11 }}
                 />
                 <Tooltip
                   contentStyle={{
-                    background: "#16161e",
-                    border: "1px solid rgba(255,255,255,0.08)",
+                    background: chart.tooltipBg,
+                    border: `1px solid ${chart.tooltipBorder}`,
                     borderRadius: 10,
-                    color: "#f9fafb",
+                    color: chart.tooltipColor,
                   }}
                   formatter={(value) => [`${value} h`, "Horas"]}
                 />

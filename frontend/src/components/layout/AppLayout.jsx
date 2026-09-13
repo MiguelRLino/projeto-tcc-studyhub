@@ -1,12 +1,15 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   BarChart3,
+  BookMarked,
   BookOpen,
+  CalendarDays,
   CheckSquare,
   Clock,
   GraduationCap,
   LayoutDashboard,
   LogOut,
+  Sparkles,
   User,
 } from "lucide-react";
 import { limparSessao } from "../../services/authService";
@@ -53,22 +56,69 @@ export default function AppLayout() {
             <BookOpen size={18} />
             Disciplinas
           </NavLink>
-          <button type="button" className="linkish shell-nav-disabled" disabled title="Em breve">
+          <NavLink
+            to="/tarefas"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
             <CheckSquare size={18} />
             Tarefas
-          </button>
-          <button type="button" className="linkish shell-nav-disabled" disabled title="Em breve">
+          </NavLink>
+          <NavLink
+            to="/sessoes"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
             <Clock size={18} />
             Sessões de Estudo
-          </button>
-          <button type="button" className="linkish shell-nav-disabled" disabled title="Em breve">
+          </NavLink>
+          <NavLink
+            to="/calendario"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
+            <CalendarDays size={18} />
+            Calendário
+          </NavLink>
+          <NavLink
+            to="/relatorios"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
             <BarChart3 size={18} />
             Relatórios
-          </button>
-          <button type="button" className="linkish shell-nav-disabled" disabled title="Em breve">
+          </NavLink>
+          <NavLink
+            to="/cadernos"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
+            <BookMarked size={18} />
+            Caderno Digital
+          </NavLink>
+          <NavLink
+            to="/assistente"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
+            <Sparkles size={18} />
+            Assistente IA
+          </NavLink>
+          <NavLink
+            to="/perfil"
+            className={({ isActive }) =>
+              isActive ? "shell-nav-active" : undefined
+            }
+          >
             <User size={18} />
             Perfil
-          </button>
+          </NavLink>
         </nav>
 
         <div className="shell-nav-footer">

@@ -28,3 +28,8 @@ export function obterAluno() {
 export function estaAutenticado() {
   return Boolean(obterToken());
 }
+
+export function atualizarAlunoLocal(aluno) {
+  if (!aluno) return;
+  localStorage.setItem(USER_KEY, JSON.stringify(aluno));
+}

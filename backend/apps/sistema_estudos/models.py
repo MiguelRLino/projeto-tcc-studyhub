@@ -45,6 +45,7 @@ class Tarefa(models.Model):
     )
     descricao = models.CharField(max_length=255, null=True, blank=True)
     data_entrega = models.DateField(null=True, blank=True)
+    hora_entrega = models.TimeField(null=True, blank=True)
     status_tarefa = models.CharField(max_length=20, null=True, blank=True)
     data_exclusao = models.DateTimeField(null=True, blank=True)
 
@@ -89,6 +90,38 @@ class SessaoEstudo(models.Model):
 
     def __str__(self) -> str:
         return f"Sessão #{self.pk}"
+
+
+class SessaoPlanejada(models.Model):
+    id_sessao_planejada = models.AutoField(primary_key=True)
+    aluno = models.ForeignKey(
+        Aluno,
+        on_delete=models.PROTECT,
+        db_column="aluno_id_aluno",
+        related_name="sessoes_planejadas",
+        null=True,
+        blank=True,
+    )
+    disciplina = models.ForeignKey(
+        Disciplina,
+        on_delete=models.PROTECT,
+        db_column="disciplina_id_disciplina",
+        related_name="sessoes_planejadas",
+        null=True,
+        blank=True,
+    )
+    data_planejada = models.DateField(null=True, blank=True)
+    duracao_prevista_minutos = models.IntegerField(null=True, blank=True)
+    observacao = models.CharField(max_length=255, null=True, blank=True)
+    data_exclusao = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = "sessao_planejada"
+        verbose_name = "Sessão planejada"
+        verbose_name_plural = "Sessões planejadas"
+
+    def __str__(self) -> str:
+        return f"Sessão planejada #{self.pk}"
 
 
 class Relatorio(models.Model):

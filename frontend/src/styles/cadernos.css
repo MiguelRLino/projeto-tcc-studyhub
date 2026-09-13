@@ -1,0 +1,767 @@
+/* Caderno Digital — layout e editor */
+.caderno-layout {
+  display: flex;
+  min-height: calc(100vh - 0px);
+  background: var(--sh-main-gradient, linear-gradient(180deg, #101018 0%, var(--sh-bg) 45%));
+}
+
+.caderno-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.caderno-sidebar {
+  width: 280px;
+  flex-shrink: 0;
+  background: var(--sh-panel);
+  border-right: 1px solid var(--sh-border);
+  padding: 1rem 0.75rem;
+  overflow-y: auto;
+  max-height: 100vh;
+}
+
+.caderno-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.35rem 0.75rem;
+  color: var(--sh-accent);
+}
+
+.caderno-sidebar-actions {
+  margin-bottom: 0.75rem;
+}
+
+.caderno-sidebar-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.65rem;
+  border-radius: 10px;
+  border: 1px dashed var(--sh-border);
+  background: transparent;
+  color: var(--sh-text);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.caderno-sidebar-btn:hover {
+  background: var(--sh-overlay-hover);
+  border-color: var(--sh-disc-hover-border);
+}
+
+.caderno-sidebar-search {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  background: var(--sh-input-bg);
+  border: 1px solid var(--sh-border);
+  margin-bottom: 0.85rem;
+  color: var(--sh-muted);
+}
+
+.caderno-sidebar-search input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: var(--sh-text);
+  font-size: 0.82rem;
+  outline: none;
+}
+
+.caderno-sidebar-section h4 {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--sh-muted);
+  margin: 0.75rem 0 0.45rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.caderno-sidebar-caderno {
+  margin-bottom: 0.25rem;
+}
+
+.caderno-sidebar-caderno-head {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  border-radius: 8px;
+}
+
+.caderno-sidebar-caderno-head.is-active {
+  background: var(--sh-accent-dim);
+}
+
+.caderno-expand,
+.caderno-sidebar-caderno-titulo,
+.caderno-sidebar-item {
+  background: transparent;
+  border: none;
+  color: var(--sh-text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.caderno-sidebar-caderno-titulo {
+  flex: 1;
+  padding: 0.4rem 0.35rem;
+  font-size: 0.86rem;
+  border-left: 3px solid var(--sh-accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+}
+
+.caderno-badge {
+  font-size: 0.68rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  background: var(--sh-overlay-soft);
+  color: var(--sh-muted);
+}
+
+.caderno-sidebar-paginas {
+  padding-left: 1.35rem;
+  margin-top: 0.15rem;
+}
+
+.caderno-sidebar-pagina-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.caderno-drag-handle {
+  opacity: 0.35;
+  cursor: grab;
+  flex-shrink: 0;
+}
+
+.caderno-sidebar-pagina {
+  display: block;
+  padding: 0.35rem 0.5rem;
+  border-radius: 6px;
+  color: var(--sh-muted);
+  text-decoration: none;
+  font-size: 0.82rem;
+  flex: 1;
+  transition: background 0.12s, color 0.12s;
+}
+
+.caderno-sidebar-pagina.is-active,
+.caderno-sidebar-pagina:hover {
+  background: var(--sh-overlay-hover);
+  color: var(--sh-text);
+}
+
+.caderno-star-inline {
+  color: var(--sh-orange);
+  margin-right: 0.25rem;
+  vertical-align: middle;
+}
+
+.caderno-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--sh-muted);
+  cursor: pointer;
+}
+
+.caderno-icon-btn:hover {
+  background: var(--sh-overlay-hover);
+  color: var(--sh-text);
+}
+
+.caderno-icon-btn.sm {
+  width: 26px;
+  height: 26px;
+  font-size: 0.75rem;
+}
+
+.caderno-welcome,
+.caderno-loading {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: var(--sh-muted);
+}
+
+.caderno-welcome h1,
+.caderno-welcome h2 {
+  color: var(--sh-text);
+  margin: 0.5rem 0;
+}
+
+.caderno-welcome-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  background: var(--sh-accent-dim);
+  color: var(--sh-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.caderno-muted {
+  color: var(--sh-muted);
+  font-size: 0.85rem;
+}
+
+.caderno-erro {
+  color: var(--sh-danger);
+  font-size: 0.88rem;
+}
+
+.caderno-erro--sm {
+  font-size: 0.78rem;
+  padding: 0 0.35rem;
+}
+
+.caderno-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--sh-border);
+  background: var(--sh-card);
+  color: var(--sh-text);
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.caderno-btn.primary {
+  background: var(--sh-accent);
+  border-color: transparent;
+  color: #fff;
+}
+
+.caderno-btn.ghost {
+  background: transparent;
+}
+
+.caderno-btn.sm {
+  padding: 0.4rem 0.65rem;
+  font-size: 0.8rem;
+}
+
+.caderno-btn:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.caderno-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Editor shell */
+.caderno-editor-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100vh;
+}
+
+.caderno-editor-shell.is-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--sh-bg);
+}
+
+.caderno-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  border-bottom: 1px solid var(--sh-border);
+  flex-wrap: wrap;
+}
+
+.caderno-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--sh-muted);
+}
+
+.caderno-breadcrumb a {
+  color: var(--sh-muted);
+  text-decoration: none;
+}
+
+.caderno-breadcrumb a:hover {
+  color: var(--sh-accent);
+}
+
+.caderno-editor-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.caderno-save-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--sh-muted);
+}
+
+.caderno-save-status--salvo {
+  color: var(--sh-green);
+}
+
+.caderno-save-status--erro {
+  color: var(--sh-danger);
+}
+
+.caderno-save-status .spin {
+  animation: caderno-spin 0.8s linear infinite;
+}
+
+@keyframes caderno-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.caderno-titulo-input {
+  width: 100%;
+  max-width: 900px;
+  margin: 1rem auto 0;
+  padding: 0 1.25rem;
+  border: none;
+  background: transparent;
+  color: var(--sh-text);
+  font-size: 1.65rem;
+  font-weight: 600;
+  outline: none;
+}
+
+/* Toolbar */
+.caderno-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 1rem;
+  background: var(--sh-card);
+  border: 1px solid var(--sh-border);
+  border-radius: var(--sh-radius);
+  align-items: center;
+}
+
+.caderno-toolbar-group {
+  display: flex;
+  align-items: center;
+  gap: 0.15rem;
+  padding-right: 0.45rem;
+  border-right: 1px solid var(--sh-border);
+}
+
+.caderno-toolbar-group--end {
+  margin-left: auto;
+  border-right: none;
+  padding-right: 0;
+}
+
+.caderno-toolbar-btn {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--sh-muted);
+  cursor: pointer;
+}
+
+.caderno-toolbar-btn:hover:not(:disabled) {
+  background: var(--sh-overlay-hover);
+  color: var(--sh-text);
+}
+
+.caderno-toolbar-btn.is-active {
+  background: var(--sh-accent-dim);
+  color: var(--sh-accent);
+}
+
+.caderno-toolbar-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.caderno-toolbar-select {
+  height: 30px;
+  border-radius: 6px;
+  border: 1px solid var(--sh-border);
+  background: var(--sh-input-bg);
+  color: var(--sh-text);
+  font-size: 0.75rem;
+  padding: 0 0.35rem;
+  max-width: 130px;
+}
+
+.caderno-toolbar-select--sm {
+  max-width: 64px;
+}
+
+.caderno-toolbar-colors {
+  flex-wrap: wrap;
+  max-width: 200px;
+}
+
+.caderno-toolbar-color {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  cursor: pointer;
+}
+
+.caderno-toolbar-color input[type="color"] {
+  width: 22px;
+  height: 22px;
+  border: none;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.caderno-toolbar-swatches {
+  display: flex;
+  gap: 3px;
+}
+
+.caderno-swatch {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1px solid var(--sh-border);
+  cursor: pointer;
+  padding: 0;
+}
+
+.caderno-swatch.is-active {
+  outline: 2px solid var(--sh-accent);
+}
+
+/* Editor body */
+.caderno-editor-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.caderno-editor-center {
+  flex: 1;
+  overflow: auto;
+  padding: 1rem 1.25rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.caderno-editor-paper {
+  width: 100%;
+  max-width: 816px;
+  min-height: 1056px;
+  background: #fff;
+  color: #111;
+  border-radius: 4px;
+  box-shadow: var(--sh-card-shadow);
+  padding: 2.5rem 3rem;
+}
+
+.caderno-editor-prose {
+  min-height: 400px;
+  outline: none;
+  font-size: 12pt;
+  line-height: 1.6;
+}
+
+.caderno-editor-prose h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.caderno-editor-prose h2 {
+  font-size: 1.5em;
+}
+
+.caderno-editor-prose h3 {
+  font-size: 1.25em;
+}
+
+.caderno-editor-prose ul,
+.caderno-editor-prose ol {
+  padding-left: 1.5rem;
+}
+
+.caderno-editor-prose blockquote {
+  border-left: 3px solid #6366f1;
+  padding-left: 1rem;
+  color: #555;
+}
+
+.caderno-editor-prose pre {
+  background: #f3f4f6;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  overflow-x: auto;
+}
+
+.caderno-editor-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.caderno-editor-prose table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.caderno-editor-prose td,
+.caderno-editor-prose th {
+  border: 1px solid #d1d5db;
+  padding: 0.4rem 0.6rem;
+}
+
+.caderno-editor-prose ul[data-type="taskList"] {
+  list-style: none;
+  padding-left: 0;
+}
+
+.caderno-editor-prose ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+/* Painel direito */
+.caderno-painel {
+  width: 260px;
+  flex-shrink: 0;
+  border-left: 1px solid var(--sh-border);
+  background: var(--sh-panel);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.caderno-painel h3 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sh-muted);
+  margin: 0 0 0.65rem;
+}
+
+.caderno-painel-meta {
+  margin: 0 0 1.25rem;
+}
+
+.caderno-painel-meta div {
+  margin-bottom: 0.55rem;
+}
+
+.caderno-painel-meta dt {
+  font-size: 0.72rem;
+  color: var(--sh-muted);
+}
+
+.caderno-painel-meta dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.85rem;
+}
+
+.caderno-painel-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.caderno-painel-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--sh-border);
+  background: var(--sh-card);
+  color: var(--sh-text);
+  font-size: 0.82rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.caderno-painel-btn:hover:not(:disabled) {
+  border-color: var(--sh-disc-hover-border);
+}
+
+.caderno-painel-btn.is-active {
+  border-color: var(--sh-orange);
+  color: var(--sh-orange);
+}
+
+.caderno-painel-btn.danger {
+  color: var(--sh-danger);
+}
+
+.caderno-painel-btn--ia {
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #c4b5fd;
+}
+
+/* Modals */
+.caderno-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--sh-modal-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  padding: 1rem;
+}
+
+.caderno-modal {
+  width: 100%;
+  max-width: 440px;
+  background: var(--sh-card);
+  border: 1px solid var(--sh-border);
+  border-radius: var(--sh-radius);
+  box-shadow: var(--sh-modal-shadow);
+}
+
+.caderno-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.15rem;
+  border-bottom: 1px solid var(--sh-border);
+}
+
+.caderno-modal-header h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.caderno-modal-body {
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.caderno-modal-body label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.82rem;
+  color: var(--sh-muted);
+}
+
+.caderno-modal-body input,
+.caderno-modal-body textarea,
+.caderno-modal-body select {
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  border: 1px solid var(--sh-border);
+  background: var(--sh-input-bg);
+  color: var(--sh-text);
+  font-size: 0.9rem;
+}
+
+.caderno-modal-cores span {
+  font-size: 0.82rem;
+  color: var(--sh-muted);
+}
+
+.caderno-modal-swatches {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.caderno-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+/* Impressão */
+@media print {
+  .shell-sidebar,
+  .caderno-sidebar,
+  .caderno-toolbar,
+  .caderno-editor-header,
+  .caderno-painel,
+  .caderno-titulo-input {
+    display: none !important;
+  }
+
+  .caderno-layout,
+  .caderno-main,
+  .caderno-editor-shell,
+  .caderno-editor-body,
+  .caderno-editor-center {
+    display: block !important;
+    overflow: visible !important;
+    min-height: auto !important;
+  }
+
+  .caderno-editor-paper {
+    box-shadow: none;
+    max-width: 100%;
+    zoom: 100% !important;
+  }
+}
+
+@media (max-width: 960px) {
+  .caderno-painel {
+    display: none;
+  }
+
+  .caderno-sidebar {
+    width: 240px;
+  }
+}
+
+@media (max-width: 720px) {
+  .caderno-layout {
+    flex-direction: column;
+  }
+
+  .caderno-sidebar {
+    width: 100%;
+    max-height: 220px;
+  }
+}

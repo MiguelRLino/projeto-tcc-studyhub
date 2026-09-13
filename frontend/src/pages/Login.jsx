@@ -101,15 +101,9 @@ export default function Login() {
             />
             Lembrar de mim
           </label>
-          <a
-            href="#"
-            className="auth-link"
-            onClick={(e) => {
-              e.preventDefault();
-            }}
-          >
+          <Link to="/esqueci-senha" className="auth-link">
             Esqueceu a senha?
-          </a>
+          </Link>
         </div>
 
         <button type="submit" className="auth-submit" disabled={carregando}>

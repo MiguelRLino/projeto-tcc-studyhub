@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
+
 export default function AuthInput({
   id,
   label,
@@ -10,7 +13,16 @@ export default function AuthInput({
   required,
   minLength,
   maxLength,
+  permitirAlternarVisibilidade = false,
 }) {
+  const [visivel, setVisivel] = useState(false);
+  const tipoCampo =
+    permitirAlternarVisibilidade && type === "password"
+      ? visivel
+        ? "text"
+        : "password"
+      : type;
+
   return (
     <div className="auth-field">
       <label htmlFor={id} className="auth-label">
@@ -26,7 +38,7 @@ export default function AuthInput({
           id={id}
           name={id}
           className="auth-input"
-          type={type}
+          type={tipoCampo}
           autoComplete={autoComplete}
           value={value}
           onChange={onChange}
@@ -35,6 +47,16 @@ export default function AuthInput({
           minLength={minLength}
           maxLength={maxLength}
         />
+        {permitirAlternarVisibilidade && type === "password" ? (
+          <button
+            type="button"
+            className="auth-input-toggle"
+            onClick={() => setVisivel((v) => !v)}
+            aria-label={visivel ? "Ocultar senha" : "Mostrar senha"}
+          >
+            {visivel ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        ) : null}
       </div>
     </div>
   );

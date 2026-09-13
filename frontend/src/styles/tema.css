@@ -1,0 +1,103 @@
+/* Tema claro — variáveis globais (área logada + auth) */
+html[data-theme="claro"] {
+  color-scheme: light;
+
+  --sh-bg: #f1f5f9;
+  --sh-panel: #ffffff;
+  --sh-card: #ffffff;
+  --sh-border: rgba(15, 23, 42, 0.1);
+  --sh-text: #111827;
+  --sh-muted: #6b7280;
+  --sh-accent: #6366f1;
+  --sh-accent-dim: rgba(99, 102, 241, 0.12);
+  --sh-green: #059669;
+  --sh-orange: #ea580c;
+  --sh-danger: #dc2626;
+  --sh-input-bg: #f9fafb;
+  --sh-overlay-hover: rgba(15, 23, 42, 0.05);
+  --sh-overlay-soft: rgba(15, 23, 42, 0.06);
+  --sh-inset-bg: #f8fafc;
+  --sh-main-gradient: linear-gradient(180deg, #eef2ff 0%, var(--sh-bg) 50%);
+  --sh-card-shadow: 0 4px 24px rgba(15, 23, 42, 0.06);
+  --sh-modal-overlay: rgba(15, 23, 42, 0.4);
+  --sh-modal-shadow: 0 24px 48px rgba(15, 23, 42, 0.12);
+  --sh-timer-subtext: rgba(255, 255, 255, 0.92);
+  --sh-scrollbar: rgba(15, 23, 42, 0.15);
+  --sh-tag-text: #4338ca;
+  --sh-disc-hover-border: rgba(99, 102, 241, 0.45);
+
+  --auth-bg: #f1f5f9;
+  --auth-bg-glow: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(99, 102, 241, 0.12),
+    transparent 55%
+  );
+  --auth-card: #ffffff;
+  --auth-card-border: rgba(15, 23, 42, 0.08);
+  --auth-text: #111827;
+  --auth-muted: #6b7280;
+  --auth-input-bg: #f9fafb;
+  --auth-input-border: rgba(15, 23, 42, 0.12);
+  --auth-shadow-btn: 0 0 0 1px rgba(99, 102, 241, 0.2), 0 8px 24px rgba(99, 102, 241, 0.2);
+  --auth-link-hover: #4f46e5;
+  --auth-placeholder: #9ca3af;
+  --auth-muted-box: rgba(15, 23, 42, 0.04);
+}
+
+html[data-theme="claro"] .shell-disc-card:hover,
+html[data-theme="claro"] .shell-sess-list-item,
+html[data-theme="claro"] .shell-perfil-conquistas-list li {
+  box-shadow: var(--sh-card-shadow);
+}
+
+html[data-theme="claro"] .shell-stat-card,
+html[data-theme="claro"] .shell-panel,
+html[data-theme="claro"] .shell-perfil-card,
+html[data-theme="claro"] .shell-sess-panel {
+  box-shadow: var(--sh-card-shadow);
+}
+
+html[data-theme="claro"] .shell-nav a:hover,
+html[data-theme="claro"] .shell-nav button.linkish:hover {
+  background: var(--sh-overlay-hover);
+}
+
+html[data-theme="claro"] .auth-link:hover {
+  color: var(--auth-link-hover);
+}
+
+html[data-theme="claro"] .auth-input::placeholder {
+  color: var(--auth-placeholder);
+}
+
+html[data-theme="claro"] .auth-google-missing {
+  background: var(--auth-muted-box);
+}
+
+html[data-theme="claro"] .auth-copyright {
+  color: var(--auth-muted);
+}
+
+html[data-theme="claro"] .auth-card {
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+}
+
+html[data-theme="claro"] .shell-table-wrap {
+  background: var(--sh-card);
+}
+
+html[data-theme="claro"] .shell-perfil-stats-list strong.up {
+  color: var(--sh-green);
+}
+
+html[data-theme="claro"] .shell-sess-btn-finalizar {
+  color: #9ca3af;
+  background: #fee2e2;
+  border-color: #fecaca;
+}
+
+html[data-theme="claro"] .shell-sess-btn-finalizar.is-active {
+  color: #b91c1c;
+  background: #fecaca;
+  border-color: #f87171;
+}

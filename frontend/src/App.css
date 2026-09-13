@@ -5,7 +5,7 @@
 .app-simple-page {
   font-family: "Inter", system-ui, sans-serif;
   padding: 2rem;
-  color: #e5e7eb;
-  background: #0d0d12;
+  color: var(--sh-text, #e5e7eb);
+  background: var(--sh-bg, #0d0d12);
   min-height: 100vh;
 }

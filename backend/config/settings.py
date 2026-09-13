@@ -31,6 +31,9 @@ INSTALLED_APPS = [
     "corsheaders",
     "apps.alunos",
     "apps.sistema_estudos",
+    "apps.cadernos",
+    "apps.assistente_ia",
+    "apps.telegram",
 ]
 
 MIDDLEWARE = [
@@ -92,6 +95,9 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = "static/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+CADERNO_IMAGEM_MAX_MB = int(os.getenv("CADERNO_IMAGEM_MAX_MB", "5"))
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # JWT simples (acesso à API após login)
@@ -101,6 +107,41 @@ JWT_EXPIRATION_HOURS = int(os.getenv("JWT_EXPIRATION_HOURS", "24"))
 
 # Google Identity Services — mesmo ID do cliente OAuth tipo “Web” (termina em .apps.googleusercontent.com)
 GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "").strip()
+
+# Link no e-mail de recuperação de senha (URL do frontend Vite)
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").strip().rstrip("/")
+PASSWORD_RESET_HOURS = int(os.getenv("PASSWORD_RESET_HOURS", "1"))
+
+# Gemini — Assistente IA (chave somente no backend)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "").strip()
+
+# Telegram — notificações (token somente no backend)
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+TELEGRAM_BOT_USERNAME = os.getenv("TELEGRAM_BOT_USERNAME", "").strip()
+
+# Cache — limite de uso do Assistente IA
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "studyhub-cache",
+    }
+}
+
+# E-mail — sem EMAIL_HOST usa console (link aparece no terminal do Django)
+EMAIL_HOST = os.getenv("EMAIL_HOST", "").strip()
+if EMAIL_HOST:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+    EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+    EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "").strip()
+    EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "").strip()
+    EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "True").lower() in ("1", "true", "yes")
+    DEFAULT_FROM_EMAIL = os.getenv(
+        "DEFAULT_FROM_EMAIL", EMAIL_HOST_USER or "noreply@studyhub.local"
+    )
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "StudyHub <noreply@studyhub.local>")
 
 # CORS — frontend Vite (React)
 CORS_ALLOWED_ORIGINS = [
