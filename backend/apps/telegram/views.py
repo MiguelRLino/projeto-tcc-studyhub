@@ -1,5 +1,6 @@
-from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+﻿from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
+from apps.responsaveis.permissions import IsAluno
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -20,7 +21,7 @@ from apps.telegram.serializers import (
 
 
 class TelegramConfiguracaoAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         return Response(serializar_config_aluno(request.user))
@@ -36,7 +37,7 @@ class TelegramConfiguracaoAPIView(APIView):
 
 
 class TelegramGerarCodigoAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request):
         registro = gerar_codigo_conexao(request.user)
@@ -50,7 +51,7 @@ class TelegramGerarCodigoAPIView(APIView):
 
 
 class TelegramDesconectarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def delete(self, request):
         config = ConfiguracaoTelegram.objects.filter(

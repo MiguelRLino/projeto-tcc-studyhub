@@ -1,0 +1,201 @@
+@startuml Diagrama_Classes_StudyHub
+title Diagrama de Classes - StudyHub
+
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+hide circle
+skinparam linetype ortho
+
+class Aluno {
+  -id_aluno: int
+  -nome: String
+  -email: String
+  -senha: String
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class Disciplina {
+  -id_disciplina: int
+  -nome: String
+  -nivel_dificuldade: int
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class Tarefa {
+  -id_tarefa: int
+  -descricao: String
+  -data_entrega: Date
+  -hora_entrega: Time
+  -status_tarefa: String
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class SessaoEstudo {
+  -id_sessao_estudo: int
+  -tempo_estudo: Decimal
+  -data_sessao: Date
+  -nivel_dificuldade: int
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class SessaoPlanejada {
+  -id_sessao_planejada: int
+  -data_planejada: Date
+  -duracao_prevista_minutos: int
+  -observacao: String
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class Caderno {
+  -id_caderno: int
+  -titulo: String
+  -descricao: String
+  -cor: String
+  -icone: String
+  -ordem: int
+  -data_criacao: DateTime
+  -data_atualizacao: DateTime
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class PaginaCaderno {
+  -id_pagina: int
+  -titulo: String
+  -conteudo: JSON
+  -ordem: int
+  -favorita: Boolean
+  -quantidade_palavras: int
+  -quantidade_caracteres: int
+  -data_criacao: DateTime
+  -data_atualizacao: DateTime
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class ImagemCaderno {
+  -id_imagem: int
+  -arquivo: String
+  -nome_original: String
+  -data_upload: DateTime
+  -data_exclusao: DateTime
+  +incluir(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class ConversaIA {
+  -id_conversa: int
+  -pergunta: String
+  -resposta: String
+  -data_criacao: DateTime
+  -data_exclusao: DateTime
+  +incluir(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class ConfiguracaoTelegram {
+  -id_configuracao: int
+  -telegram_chat_id: Long
+  -telegram_username: String
+  -telegram_ativo: Boolean
+  -notificar_24h: Boolean
+  -notificar_2h: Boolean
+  -data_conexao: DateTime
+  -data_atualizacao: DateTime
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+class CodigoConexaoTelegram {
+  -id_codigo: int
+  -codigo: String
+  -data_criacao: DateTime
+  -data_expiracao: DateTime
+  -utilizado: Boolean
+  +incluir(): void
+  +consultar(): void
+  +alterar(): void
+}
+
+class NotificacaoTelegram {
+  -id_notificacao: int
+  -tipo: String
+  -status_envio: String
+  -data_envio: DateTime
+  -erro: String
+  -data_criacao: DateTime
+  +incluir(): void
+  +consultar(): void
+}
+
+class Relatorio {
+  -id_relatorio: int
+  -periodo: String
+  -total_horas: Decimal
+  -data_exclusao: DateTime
+  +incluir(): void
+  +alterar(): void
+  +consultar(): void
+  +excluir(): void
+}
+
+' Relacionamentos
+Aluno "1" --> "0..*" Disciplina : possui
+Disciplina "1" --> "0..*" Tarefa : possui
+
+Aluno "1" --> "0..*" SessaoEstudo : registra
+Disciplina "1" --> "0..*" SessaoEstudo : vincula
+
+Aluno "1" --> "0..*" SessaoPlanejada : agenda
+Disciplina "1" --> "0..*" SessaoPlanejada : vincula
+
+Aluno "1" --> "0..*" Caderno : possui
+Disciplina "0..1" --> "0..*" Caderno : organiza
+Caderno "1" --> "0..*" PaginaCaderno : contem
+PaginaCaderno "1" --> "0..*" ImagemCaderno : possui
+
+Aluno "1" --> "0..*" ConversaIA : realiza
+Aluno "1" --> "0..*" Relatorio : possui
+
+Aluno "1" --> "0..1" ConfiguracaoTelegram : configura
+Aluno "1" --> "0..*" CodigoConexaoTelegram : gera
+Aluno "1" --> "0..*" NotificacaoTelegram : recebe
+Tarefa "1" --> "0..*" NotificacaoTelegram : gera
+
+note right of NotificacaoTelegram
+  tipo:
+  TAREFA_24H = aviso 24h antes
+  TAREFA_2H = aviso 2h antes
+end note
+
+@enduml

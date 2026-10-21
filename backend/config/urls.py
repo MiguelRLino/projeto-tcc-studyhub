@@ -10,6 +10,7 @@ urlpatterns = [
     path("api/", include("apps.cadernos.urls")),
     path("api/", include("apps.assistente_ia.urls")),
     path("api/", include("apps.telegram.urls")),
+    path("api/responsaveis/", include("apps.responsaveis.urls")),
 ]
 
 if settings.DEBUG:

@@ -1,6 +1,7 @@
-from django.utils import timezone
+﻿from django.utils import timezone
 from rest_framework import status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
+from apps.responsaveis.permissions import IsAluno
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -22,7 +23,7 @@ def queryset_conversas(aluno):
 
 
 class AssistentePerguntarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request):
         serializer = PerguntaSerializer(data=request.data)
@@ -57,7 +58,7 @@ class AssistentePerguntarAPIView(APIView):
 
 
 class AssistenteHistoricoListAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         qs = queryset_conversas(request.user).order_by("-data_criacao")[:100]
@@ -65,7 +66,7 @@ class AssistenteHistoricoListAPIView(APIView):
 
 
 class AssistenteHistoricoDetailAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request, pk):
         conversa = queryset_conversas(request.user).filter(pk=pk).first()

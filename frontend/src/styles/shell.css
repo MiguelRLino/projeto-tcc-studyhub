@@ -86,7 +86,8 @@ html[data-theme="escuro"] {
 }
 
 .shell-nav a,
-.shell-nav button.linkish {
+.shell-nav button.linkish,
+.shell-nav-footer button.linkish {
   display: flex;
   align-items: center;
   gap: 0.65rem;
@@ -101,10 +102,12 @@ html[data-theme="escuro"] {
   cursor: pointer;
   text-align: left;
   font-family: inherit;
+  width: 100%;
 }
 
 .shell-nav a:hover,
-.shell-nav button.linkish:hover {
+.shell-nav button.linkish:hover,
+.shell-nav-footer button.linkish:hover {
   color: var(--sh-text);
   background: var(--sh-overlay-hover);
 }

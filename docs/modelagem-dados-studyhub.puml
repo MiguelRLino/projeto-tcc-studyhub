@@ -1,0 +1,175 @@
+@startuml Modelagem_Dados_StudyHub
+title Modelagem Relacional - StudyHub
+!define primary_key(x) <b><color:#b8860b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+
+hide circle
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor #333333
+}
+
+entity "aluno" as aluno {
+  * id_aluno : INT <<PK>>
+  --
+  nome : VARCHAR(100)
+  email : VARCHAR(150)
+  senha : VARCHAR(255)
+}
+
+entity "disciplina" as disciplina {
+  * id_disciplina : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  nome : VARCHAR(100)
+  nivel_dificuldade : INT
+  data_exclusao : DATETIME
+}
+
+entity "tarefa" as tarefa {
+  * id_tarefa : INT <<PK>>
+  --
+  * disciplina_id_disciplina : INT <<FK>>
+  descricao : VARCHAR(255)
+  data_entrega : DATE
+  hora_entrega : TIME
+  status_tarefa : VARCHAR(20)
+  data_exclusao : DATETIME
+}
+
+entity "sessao_estudo" as sessao_estudo {
+  * id_sessao_estudo : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  * disciplina_id_disciplina : INT <<FK>>
+  tempo_estudo : DECIMAL(5,2)
+  data_sessao : DATE
+  nivel_dificuldade : INT
+  data_exclusao : DATETIME
+}
+
+entity "sessao_planejada" as sessao_planejada {
+  * id_sessao_planejada : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  * disciplina_id_disciplina : INT <<FK>>
+  data_planejada : DATE
+  duracao_prevista_minutos : INT
+  observacao : VARCHAR(255)
+  data_exclusao : DATETIME
+}
+
+entity "caderno" as caderno {
+  * id_caderno : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  disciplina_id_disciplina : INT <<FK>>
+  titulo : VARCHAR(150)
+  descricao : VARCHAR(500)
+  cor : VARCHAR(20)
+  icone : VARCHAR(50)
+  ordem : INT
+  data_criacao : DATETIME
+  data_atualizacao : DATETIME
+  data_exclusao : DATETIME
+}
+
+entity "pagina_caderno" as pagina_caderno {
+  * id_pagina : INT <<PK>>
+  --
+  * caderno_id_caderno : INT <<FK>>
+  titulo : VARCHAR(200)
+  conteudo : JSON
+  ordem : INT
+  favorita : BOOLEAN
+  quantidade_palavras : INT
+  quantidade_caracteres : INT
+  data_criacao : DATETIME
+  data_atualizacao : DATETIME
+  data_exclusao : DATETIME
+}
+
+entity "imagem_caderno" as imagem_caderno {
+  * id_imagem : INT <<PK>>
+  --
+  * pagina_id_pagina : INT <<FK>>
+  arquivo : VARCHAR(255)
+  nome_original : VARCHAR(255)
+  data_upload : DATETIME
+  data_exclusao : DATETIME
+}
+
+entity "conversa_ia" as conversa_ia {
+  * id_conversa : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  pergunta : TEXT
+  resposta : TEXT
+  data_criacao : DATETIME
+  data_exclusao : DATETIME
+}
+
+entity "configuracao_telegram" as configuracao_telegram {
+  * id_configuracao : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  telegram_chat_id : BIGINT
+  telegram_username : VARCHAR(100)
+  telegram_ativo : BOOLEAN
+  notificar_24h : BOOLEAN
+  notificar_2h : BOOLEAN
+  data_conexao : DATETIME
+  data_atualizacao : DATETIME
+  data_exclusao : DATETIME
+}
+
+entity "codigo_conexao_telegram" as codigo_conexao_telegram {
+  * id_codigo : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  codigo : VARCHAR(10)
+  data_criacao : DATETIME
+  data_expiracao : DATETIME
+  utilizado : BOOLEAN
+}
+
+entity "notificacao_telegram" as notificacao_telegram {
+  * id_notificacao : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  * tarefa_id_tarefa : INT <<FK>>
+  tipo : VARCHAR(20)
+  status_envio : VARCHAR(20)
+  data_envio : DATETIME
+  erro : VARCHAR(255)
+  data_criacao : DATETIME
+}
+
+entity "relatorio" as relatorio {
+  * id_relatorio : INT <<PK>>
+  --
+  * aluno_id_aluno : INT <<FK>>
+  periodo : VARCHAR(50)
+  total_horas : DECIMAL(5,2)
+  data_exclusao : DATETIME
+}
+
+aluno ||--o{ disciplina
+disciplina ||--o{ tarefa
+aluno ||--o{ sessao_estudo
+disciplina ||--o{ sessao_estudo
+aluno ||--o{ sessao_planejada
+disciplina ||--o{ sessao_planejada
+aluno ||--o{ caderno
+disciplina |o--o{ caderno
+caderno ||--o{ pagina_caderno
+pagina_caderno ||--o{ imagem_caderno
+aluno ||--o{ conversa_ia
+aluno ||--o| configuracao_telegram
+aluno ||--o{ codigo_conexao_telegram
+aluno ||--o{ notificacao_telegram
+tarefa ||--o{ notificacao_telegram
+aluno ||--o{ relatorio
+
+@enduml

@@ -58,7 +58,8 @@ html[data-theme="claro"] .shell-sess-panel {
 }
 
 html[data-theme="claro"] .shell-nav a:hover,
-html[data-theme="claro"] .shell-nav button.linkish:hover {
+html[data-theme="claro"] .shell-nav button.linkish:hover,
+html[data-theme="claro"] .shell-nav-footer button.linkish:hover {
   background: var(--sh-overlay-hover);
 }
 

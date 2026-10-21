@@ -9,6 +9,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from apps.alunos.models import Aluno
+from apps.responsaveis.permissions import IsAluno
 from apps.alunos.serializers import (
     AlunoAlterarSenhaSerializer,
     AlunoCadastroSerializer,
@@ -33,14 +34,26 @@ class AlunoCadastroView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        from apps.responsaveis.models import Responsavel
+
         serializer = AlunoCadastroSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data["email"]
+        if Responsavel.objects.filter(email__iexact=email).exists():
+            return Response(
+                {
+                    "erro": "Este e-mail já está em uso por uma conta de responsável.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         aluno = serializer.save()
         token = criar_token_acesso(aluno.id_aluno)
         return Response(
             {
                 "mensagem": "Cadastro realizado com sucesso.",
+                "tipo": "ALUNO",
                 "aluno": AlunoPublicoSerializer(aluno).data,
+                "usuario": AlunoPublicoSerializer(aluno).data,
                 "access": token,
             },
             status=status.HTTP_201_CREATED,
@@ -48,36 +61,68 @@ class AlunoCadastroView(APIView):
 
 
 class AlunoLoginView(APIView):
+    """Login unificado: tenta Aluno e, se não achar, Responsável."""
+
     permission_classes = [AllowAny]
 
     def post(self, request):
+        from apps.alunos.services.auth_service import TIPO_RESPONSAVEL
+        from apps.responsaveis.models import Responsavel
+
         serializer = AlunoLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         email = serializer.validated_data["email"]
         senha = serializer.validated_data["senha"]
 
-        try:
-            aluno = Aluno.objects.get(email__iexact=email)
-        except Aluno.DoesNotExist:
+        aluno = Aluno.objects.filter(email__iexact=email).first()
+        if aluno is not None:
+            if not check_password(senha, aluno.senha):
+                return Response(
+                    {"erro": "E-mail ou senha incorretos."},
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+            token = criar_token_acesso(aluno.id_aluno)
+            publico = AlunoPublicoSerializer(aluno).data
             return Response(
-                {"erro": "E-mail ou senha incorretos."},
-                status=status.HTTP_401_UNAUTHORIZED,
+                {
+                    "mensagem": "Login realizado com sucesso.",
+                    "tipo": "ALUNO",
+                    "aluno": publico,
+                    "usuario": publico,
+                    "access": token,
+                },
+                status=status.HTTP_200_OK,
             )
 
-        if not check_password(senha, aluno.senha):
+        responsavel = Responsavel.objects.filter(email__iexact=email).first()
+        if responsavel is not None:
+            if not check_password(senha, responsavel.senha):
+                return Response(
+                    {"erro": "E-mail ou senha incorretos."},
+                    status=status.HTTP_401_UNAUTHORIZED,
+                )
+            token = criar_token_acesso(
+                tipo=TIPO_RESPONSAVEL,
+                id_responsavel=responsavel.id_responsavel,
+            )
+            usuario = {
+                "id_responsavel": responsavel.id_responsavel,
+                "nome": responsavel.nome,
+                "email": responsavel.email,
+            }
             return Response(
-                {"erro": "E-mail ou senha incorretos."},
-                status=status.HTTP_401_UNAUTHORIZED,
+                {
+                    "mensagem": "Login realizado com sucesso.",
+                    "tipo": TIPO_RESPONSAVEL,
+                    "usuario": usuario,
+                    "access": token,
+                },
+                status=status.HTTP_200_OK,
             )
 
-        token = criar_token_acesso(aluno.id_aluno)
         return Response(
-            {
-                "mensagem": "Login realizado com sucesso.",
-                "aluno": AlunoPublicoSerializer(aluno).data,
-                "access": token,
-            },
-            status=status.HTTP_200_OK,
+            {"erro": "E-mail ou senha incorretos."},
+            status=status.HTTP_401_UNAUTHORIZED,
         )
 
 
@@ -137,6 +182,16 @@ class AlunoGoogleLoginView(APIView):
         nome_google = (idinfo.get("name") or "").strip()
         nome = (nome_google or email.split("@")[0])[:100]
 
+        from apps.responsaveis.models import Responsavel
+
+        if Responsavel.objects.filter(email__iexact=email).exists():
+            return Response(
+                {
+                    "erro": "Este e-mail pertence a uma conta de responsável. Use e-mail/senha.",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         try:
             aluno = Aluno.objects.get(email__iexact=email)
             if (not (aluno.nome or "").strip()) and nome:
@@ -150,10 +205,13 @@ class AlunoGoogleLoginView(APIView):
             )
 
         token = criar_token_acesso(aluno.id_aluno)
+        publico = AlunoPublicoSerializer(aluno).data
         return Response(
             {
                 "mensagem": "Login realizado com sucesso.",
-                "aluno": AlunoPublicoSerializer(aluno).data,
+                "tipo": "ALUNO",
+                "usuario": publico,
+                "aluno": publico,
                 "access": token,
             },
             status=status.HTTP_200_OK,
@@ -161,7 +219,7 @@ class AlunoGoogleLoginView(APIView):
 
 
 class AlunoPerfilView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         return Response(montar_perfil_completo(request.user), status=status.HTTP_200_OK)
@@ -258,7 +316,7 @@ class AlunoRecuperarSenhaConfirmarView(APIView):
 
 
 class AlunoAlterarSenhaView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request):
         serializer = AlunoAlterarSenhaSerializer(

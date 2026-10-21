@@ -16,7 +16,9 @@ function requisicaoPublicaSemAuth(config) {
     url.includes("/api/alunos/login/google/") ||
     url.includes("/api/alunos/login/") ||
     url.includes("/api/alunos/cadastro/") ||
-    url.includes("/api/alunos/recuperar-senha/")
+    url.includes("/api/alunos/recuperar-senha/") ||
+    url.includes("/api/responsaveis/convites/validar/") ||
+    url.includes("/api/responsaveis/login/")
   );
 }
 

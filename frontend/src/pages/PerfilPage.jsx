@@ -13,6 +13,7 @@ import {
   Trophy,
   User,
 } from "lucide-react";
+import MeusResponsaveis from "../components/responsaveis/MeusResponsaveis";
 import TelegramConfiguracao from "../components/telegram/TelegramConfiguracao";
 import { extrairMensagemErro } from "../services/api";
 import { atualizarAlunoLocal, limparSessao, obterAluno } from "../services/authService";
@@ -261,6 +262,16 @@ export default function PerfilPage() {
           </section>
 
           <TelegramConfiguracao />
+
+          <MeusResponsaveis
+            onMensagem={(msg, isErro) => {
+              if (isErro) setErro(msg);
+              else {
+                setErro("");
+                setSucesso(msg);
+              }
+            }}
+          />
         </div>
 
         <div className="shell-perfil-col">

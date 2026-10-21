@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     "apps.cadernos",
     "apps.assistente_ia",
     "apps.telegram",
+    "apps.responsaveis",
 ]
 
 MIDDLEWARE = [
@@ -111,6 +112,7 @@ GOOGLE_OAUTH_CLIENT_ID = os.getenv("GOOGLE_OAUTH_CLIENT_ID", "").strip()
 # Link no e-mail de recuperação de senha (URL do frontend Vite)
 FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173").strip().rstrip("/")
 PASSWORD_RESET_HOURS = int(os.getenv("PASSWORD_RESET_HOURS", "1"))
+RESPONSAVEL_CONVITE_HORAS = int(os.getenv("RESPONSAVEL_CONVITE_HORAS", "48"))
 
 # Gemini — Assistente IA (chave somente no backend)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
@@ -164,5 +166,9 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "100/hour",
+        "user": "1000/hour",
+    },
     "EXCEPTION_HANDLER": "apps.alunos.exceptions.custom_exception_handler",
 }

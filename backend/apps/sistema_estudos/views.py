@@ -1,9 +1,10 @@
-from datetime import timedelta
+﻿from datetime import timedelta
 
 from django.db.models import Q, Sum
 from django.utils import timezone
 from rest_framework import generics, status
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
+from apps.responsaveis.permissions import IsAluno
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -25,7 +26,7 @@ from apps.sistema_estudos.services.feriados_service import intervalo_mes, listar
 class DashboardResumoAPIView(APIView):
     """Resumo para o dashboard (métricas reais quando houver dados nas tabelas)."""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         aluno = request.user
@@ -127,7 +128,7 @@ class DashboardResumoAPIView(APIView):
 
 
 class DisciplinaListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get_queryset(self):
         return disciplinas_ativas_com_metricas(self.request.user)
@@ -149,7 +150,7 @@ class DisciplinaListCreateAPIView(generics.ListCreateAPIView):
 
 
 class DisciplinaDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
     lookup_field = "pk"
     lookup_url_kwarg = "pk"
 
@@ -180,7 +181,7 @@ class DisciplinaDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 class SessaoEstudoResumoAPIView(APIView):
     """Métricas do topo da tela de sessões de estudo."""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         aluno = request.user
@@ -205,7 +206,7 @@ META_SEMANAL_HORAS = 10
 class RelatoriosResumoAPIView(APIView):
     """Métricas e gráficos da tela de relatórios."""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         aluno = request.user
@@ -305,7 +306,7 @@ class RelatoriosResumoAPIView(APIView):
 
 
 class SessaoEstudoListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get_queryset(self):
         return (
@@ -338,7 +339,7 @@ class SessaoEstudoListCreateAPIView(generics.ListCreateAPIView):
 class CalendarioAPIView(APIView):
     """Dados do calendário de estudos: tarefas, sessões e feriados do mês."""
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         aluno = request.user
@@ -414,7 +415,7 @@ class CalendarioAPIView(APIView):
 
 
 class TarefaListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get_queryset(self):
         aluno = self.request.user
@@ -452,7 +453,7 @@ class TarefaListCreateAPIView(generics.ListCreateAPIView):
 
 
 class TarefaDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
     lookup_field = "pk"
     lookup_url_kwarg = "pk"
 
@@ -490,7 +491,7 @@ class TarefaDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class SessaoPlanejadaListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get_queryset(self):
         qs = SessaoPlanejada.objects.filter(
@@ -526,7 +527,7 @@ class SessaoPlanejadaListCreateAPIView(generics.ListCreateAPIView):
 
 
 class SessaoPlanejadaDetailAPIView(generics.DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
     lookup_field = "pk"
     lookup_url_kwarg = "pk"
 

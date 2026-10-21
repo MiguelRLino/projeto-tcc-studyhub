@@ -1,11 +1,12 @@
-import os
+﻿import os
 
 from django.db import transaction
 from django.db.models import Q
 from django.utils import timezone
 from rest_framework import generics, status
 from rest_framework.parsers import FormParser, MultiPartParser
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated
+from apps.responsaveis.permissions import IsAluno
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -47,7 +48,7 @@ def obter_caderno_aluno(aluno, pk):
 
 
 class CadernoListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get_queryset(self):
         return queryset_cadernos(self.request.user).order_by("ordem", "titulo")
@@ -76,7 +77,7 @@ class CadernoListCreateAPIView(generics.ListCreateAPIView):
 
 
 class CadernoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsDonoCaderno]
+    permission_classes = [IsAuthenticated, IsAluno, IsDonoCaderno]
     lookup_field = "pk"
 
     def get_queryset(self):
@@ -125,7 +126,7 @@ class CadernoDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PaginaListCreateAPIView(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get_caderno(self):
         return obter_caderno_aluno(self.request.user, self.kwargs["pk"])
@@ -163,7 +164,7 @@ class PaginaListCreateAPIView(generics.ListCreateAPIView):
 
 
 class PaginaDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAuthenticated, IsDonoPagina]
+    permission_classes = [IsAuthenticated, IsAluno, IsDonoPagina]
     lookup_field = "pk"
 
     def get_queryset(self):
@@ -209,7 +210,7 @@ class PaginaDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class PaginaDuplicarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request, pk):
         pagina = queryset_paginas(request.user).get(pk=pk)
@@ -239,7 +240,7 @@ class PaginaDuplicarAPIView(APIView):
 
 
 class PaginaMoverAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request, pk):
         pagina = queryset_paginas(request.user).get(pk=pk)
@@ -271,7 +272,7 @@ class PaginaMoverAPIView(APIView):
 
 
 class PaginaFavoritarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def patch(self, request, pk):
         pagina = queryset_paginas(request.user).get(pk=pk)
@@ -293,7 +294,7 @@ class PaginaFavoritarAPIView(APIView):
 
 
 class PaginaPesquisarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         q = (request.query_params.get("q") or "").strip()
@@ -316,7 +317,7 @@ class PaginaPesquisarAPIView(APIView):
 
 
 class PaginaReordenarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request, pk):
         caderno = obter_caderno_aluno(request.user, pk)
@@ -336,7 +337,7 @@ class PaginaReordenarAPIView(APIView):
 
 
 class PaginaExportarPdfAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def post(self, request, pk):
         pagina = queryset_paginas(request.user).get(pk=pk)
@@ -351,7 +352,7 @@ class PaginaExportarPdfAPIView(APIView):
 
 
 class ImagemUploadAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
     parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request, pk):
@@ -385,7 +386,7 @@ class ImagemUploadAPIView(APIView):
 
 
 class CadernoPesquisarAPIView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsAluno]
 
     def get(self, request):
         q = (request.query_params.get("q") or "").strip()

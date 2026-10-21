@@ -4,7 +4,7 @@ import { Lock, Mail, User } from "lucide-react";
 import AuthShell from "../components/AuthShell";
 import AuthInput from "../components/AuthInput";
 import { api, extrairMensagemErro } from "../services/api";
-import { salvarSessao } from "../services/authService";
+import { salvarSessao, TIPO_ALUNO } from "../services/authService";
 
 export default function Cadastro() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ export default function Cadastro() {
         email,
         senha,
       });
-      salvarSessao(data.access, data.aluno);
+      salvarSessao(data.access, data.usuario || data.aluno, data.tipo || TIPO_ALUNO);
       navigate("/dashboard", { replace: true });
     } catch (err) {
       setErro(extrairMensagemErro(err));

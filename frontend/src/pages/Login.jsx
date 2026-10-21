@@ -5,7 +5,12 @@ import { Lock, Mail } from "lucide-react";
 import AuthShell from "../components/AuthShell";
 import AuthInput from "../components/AuthInput";
 import { api, extrairMensagemErro } from "../services/api";
-import { salvarSessao } from "../services/authService";
+import {
+  destinoPosLogin,
+  salvarSessao,
+  TIPO_ALUNO,
+  TIPO_RESPONSAVEL,
+} from "../services/authService";
 
 const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
@@ -34,13 +39,15 @@ export default function Login() {
     setCarregando(true);
     try {
       const { data } = await api.post("/api/alunos/login/", { email, senha });
-      salvarSessao(data.access, data.aluno);
+      const tipo = data.tipo || TIPO_ALUNO;
+      const usuario = data.usuario || data.aluno;
+      salvarSessao(data.access, usuario, tipo);
       if (lembrar) {
         localStorage.setItem("studyhub_lembrar_email", email.trim());
       } else {
         localStorage.removeItem("studyhub_lembrar_email");
       }
-      navigate(from === "/login" ? "/dashboard" : from, { replace: true });
+      navigate(destinoPosLogin(tipo, from), { replace: true });
     } catch (err) {
       setErro(extrairMensagemErro(err));
     } finally {
@@ -54,8 +61,10 @@ export default function Login() {
     setCarregando(true);
     try {
       const { data } = await api.post("/api/alunos/login/google/", { credential });
-      salvarSessao(data.access, data.aluno);
-      navigate(from === "/login" ? "/dashboard" : from, { replace: true });
+      const tipo = data.tipo || TIPO_ALUNO;
+      const usuario = data.usuario || data.aluno;
+      salvarSessao(data.access, usuario, tipo);
+      navigate(destinoPosLogin(tipo, from), { replace: true });
     } catch (err) {
       setErro(extrairMensagemErro(err));
     } finally {
